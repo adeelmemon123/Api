@@ -90,8 +90,8 @@ app.post('/addadministrator', upload.single('profilepicture'), (req, res) => {
   const requestData = req.body;
   const imagePath = req.file ? req.file.path : null;
 
-  const sql = 'INSERT INTO administrators (name, email, password, profilepicture) VALUES (?, ?, ?, ?)';
-  db.query(sql, [requestData.name, requestData.email, requestData.password, imagePath], (err, result) => {
+  const sql = 'INSERT INTO table1 (id, name, image) VALUES (?, ?, ?)';
+  db.query(sql, [requestData.id, requestData.name, imagePath], (err, result) => {
     if (err) {
       console.error('Error inserting data:', err);
       return res.status(500).json({ error: 'Internal Server Error', message: err.message });
@@ -102,6 +102,17 @@ app.post('/addadministrator', upload.single('profilepicture'), (req, res) => {
   });
 });
 
+app.get('/administrators', (req, res) => {
+  const sql = 'SELECT * FROM table1';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error retrieving administrators:', err);
+      return res.status(500).json({ error: 'Internal Server Error', message: err.message });
+    } else {
+      return res.status(200).json(results);
+    }
+  });
+});
 
 
 app.listen(port, () => {
